@@ -36,7 +36,7 @@ public class TCPClient {
 			if(readByteCount == -1) {
 				// 정상종료: remote socket이 close() 메소드를 통해서 정상적으로 소켓을 닫은 경우
 				System.out.println("[TCPClient] closed by server");
-				return;
+				break;
 			}
 			
 			data = new String(buffer, 0, readByteCount, "UTF-8");
