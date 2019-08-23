@@ -1,8 +1,12 @@
 package echo;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Scanner;
@@ -13,50 +17,51 @@ public class EchoClient {
 	
 	public static void main(String[] args) {
 		Socket socket = null;
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = null;
 		try {
-			// 1. 소켓생성
+			// 1. Scanner 생성(표준입력, 키보드 연결)
+			scanner = new Scanner(System.in);
+			
+			// 2. 소켓생성
 			socket = new Socket();
 			
-			// 2. 서버연결
-			InetSocketAddress inetSocketAddress = new InetSocketAddress(SERVER_IP, SERVER_PORT);
-			socket.connect(inetSocketAddress);
-			System.out.println("[EchoClient] connected");
+			// 3. 서버연결
+			socket.connect(new InetSocketAddress(SERVER_IP, SERVER_PORT));
+			log("connected");
 			
-			// 3. IOStream 받아오기
-			InputStream is = socket.getInputStream();
-			OutputStream os = socket.getOutputStream();
+			// 4. I/O Stream 생성하기
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true); // true -> flush옵션 버퍼가 채워질때마다 출력하기.
 			
-			// 4. 데이터 쓰기
-			String data = "";
+			// 5. 키보드 입력 받기
 			while(true) {
 				System.out.print(">>");
-				data = scanner.nextLine();
-				os.write(data.getBytes("UTF-8"));
-				if("exit".equals(data)) {
-					System.out.println("[EchoClient] closed by server");
+				String line = scanner.nextLine();
+				if("quit".equals(line)) {
+					log("closed by server");
 					break;
 				}
-				// 5. 데이터 읽기
-				byte[] buffer = new byte[256];
-				int readByteCount = is.read(buffer); // Blocking
-				if(readByteCount == -1) {
-					// 정상종료: remote socket이 close() 메소드를 통해서 정상적으로 소켓을 닫은 경우
-					System.out.println("[EchoClient] closed by server");
-					return;
-				}
+				// 6. 데이터 쓰기(송신)
+				pw.println(line);
 				
-				data = new String(buffer, 0, readByteCount, "UTF-8");
+				// 7. 데이터 읽기(수송)
+				String data = br.readLine(); // Blocking
+				if(data == null) {
+					// 정상종료: remote socket이 close() 메소드를 통해서 정상적으로 소켓을 닫은 경우
+					log("closed by server");
+					break;
+				}
+				// 8. 콘솔출력
 				System.out.println("<<" + data);
 			}
-			scanner.close();
-			
-			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
+				if(scanner != null) {
+					scanner.close();
+				}
 				if(socket != null && socket.isClosed() == false) {
 					socket.close();
 				}
@@ -64,5 +69,9 @@ public class EchoClient {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private static void log(String log) {
+		System.out.println("[Echo Client] " + log);
 	}
 }
