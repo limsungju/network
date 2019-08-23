@@ -79,7 +79,7 @@ public class EchoServer {
 		}
 	}
 	
-	public static void log(String log) {
+	private static void log(String log) {
 		System.out.println("[Echo Server] " + log);
 	}
 	
