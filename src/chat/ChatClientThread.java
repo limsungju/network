@@ -12,8 +12,6 @@ public class ChatClientThread extends Thread {
 		this.socket = socket;
 		this.br = br;
 	}
-
-	
 	
 	@Override
 	public void run() {
@@ -22,6 +20,7 @@ public class ChatClientThread extends Thread {
 			while (true) {
 				System.out.print(">>");
 				data = br.readLine();
+				// quit입력시 while문 탈출
 				if(data==null) {
 					break;
 				}
@@ -33,7 +32,7 @@ public class ChatClientThread extends Thread {
 		} finally {
 			if(socket != null && socket.isClosed() == false) {
 				try {
-						socket.close();
+					socket.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

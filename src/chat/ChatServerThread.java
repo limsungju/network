@@ -37,7 +37,6 @@ public class ChatServerThread extends Thread {
 			while(true) {
 				// 5. 데이터 읽기(수신)
 				String data = br.readLine();
-				System.out.println(data);
 				if(data == null) {
 					// 정상종료: remote socket이 close() 메소드를 통해서 정상적으로 소켓을 닫은 경우
 					EchoServer.log("closed by client");
@@ -48,10 +47,14 @@ public class ChatServerThread extends Thread {
 				String[] tokens = data.split(":");
 				if("join".equals(tokens[0])) {
 					doJoin(tokens[1], pw);
+					System.out.println(this.nickname + ": 님이 접속하였습니다.");
 				} else if("message".equals(tokens[0])) {
 					doMessage(tokens[1]);
+					System.out.println(this.nickname + ":"+tokens[1]);
+					
 				} else if("quit".equals(tokens[0])) {
 					doQuit(pw);
+					System.out.println(this.nickname + ": 님이 접속을 끊으셨습니다.");
 					break;
 				} else {
 					ChatServer.log("에러: 알수 없는 요청(" + tokens[0] + ")");

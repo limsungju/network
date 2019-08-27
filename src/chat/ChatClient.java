@@ -43,12 +43,14 @@ public class ChatClient {
 			while(true) {
 				System.out.print(">>");
 				String line = scanner.nextLine();
+				// quit입력시 처리
 				if("quit".equals(line)) {
 					log("closed by server");
 					pw.println("quit:");
 					break;
 				}
 				
+				// 공백처리
 				if("".equals(line)) {
 					line = " ";
 				}
