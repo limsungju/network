@@ -79,7 +79,6 @@ public class ChatServerThread extends Thread {
 					e.printStackTrace();
 				}
 			}
-	
 		}
 	}
 	

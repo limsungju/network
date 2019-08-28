@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ChatClient {
-	private static final String SERVER_IP = "192.168.56.1";
+	private static final String SERVER_IP = "127.0.0.1";
 	private static final int SERVER_PORT = 7000;
 	
 	public static void main(String[] args) {
@@ -49,14 +49,12 @@ public class ChatClient {
 					pw.println("quit:");
 					break;
 				}
-				
 				// 공백처리
 				if("".equals(line)) {
 					line = " ";
 				}
 				// 6. 데이터 쓰기(송신)
 				pw.println("message:" + line);
-				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
