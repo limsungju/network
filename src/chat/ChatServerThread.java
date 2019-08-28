@@ -37,22 +37,25 @@ public class ChatServerThread extends Thread {
 			while(true) {
 				// 5. 데이터 읽기(수신)
 				String data = br.readLine();
+				
 				if(data == null) {
 					// 정상종료: remote socket이 close() 메소드를 통해서 정상적으로 소켓을 닫은 경우
+					System.out.println(data);
 					EchoServer.log("closed by client");
+					doQuit(pw);
 					break;
 				}
 				
 				// 프로토콜 분석
 				String[] tokens = data.split(":");
+				// 닉네임 입력시 처리
 				if("join".equals(tokens[0])) {
 					doJoin(tokens[1], pw);
 					System.out.println(this.nickname + ": 님이 접속하였습니다.");
-				} else if("message".equals(tokens[0])) {
+				} else if("message".equals(tokens[0])) { // 메시지 처리
 					doMessage(tokens[1]);
 					System.out.println(this.nickname + ":"+tokens[1]);
-					
-				} else if("quit".equals(tokens[0])) {
+				} else if("quit".equals(tokens[0])) { // 종료 처리
 					doQuit(pw);
 					System.out.println(this.nickname + ": 님이 접속을 끊으셨습니다.");
 					break;
@@ -63,6 +66,7 @@ public class ChatServerThread extends Thread {
 			}
 			
 		} catch(SocketException e) {
+			// 클라이언트에서 비정상 종료 되었을 때
 			ChatServer.log("abnormal closed by client");
 		} catch(IOException e) {
 			ChatServer.log(this.nickname + "님이 채팅방을 나갔습니다.");
@@ -125,5 +129,4 @@ public class ChatServerThread extends Thread {
 			
 		}
 	}
-	
 }

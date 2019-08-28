@@ -16,7 +16,6 @@ public class ChatServer {
 		// 1. 서버소켓 생성
 		ServerSocket serverSocket = null;
 		List<PrintWriter> listWriters = new ArrayList<PrintWriter>(); // 
-
 		try {
 			serverSocket = new ServerSocket();
 			

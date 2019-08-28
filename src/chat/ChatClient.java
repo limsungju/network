@@ -45,7 +45,7 @@ public class ChatClient {
 				String line = scanner.nextLine();
 				// quit입력시 처리
 				if("quit".equals(line)) {
-					log("closed by server");
+					log("closed by server2");
 					pw.println("quit:");
 					break;
 				}
@@ -61,7 +61,9 @@ public class ChatClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			scanner.close();
+			if(scanner != null) {
+				scanner.close();
+			}
 		}
 	}
 	

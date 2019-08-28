@@ -3,6 +3,9 @@ package chat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
+
+import echo.EchoServer;
 
 public class ChatClientThread extends Thread {
 	private Socket socket = null;
@@ -27,6 +30,9 @@ public class ChatClientThread extends Thread {
 				// 8. 콘솔출력
 				System.out.println(data);
 			}
+		} catch (SocketException e) {
+			// 서버에서 비정상 종료 되었을 때
+			EchoServer.log("closed by server");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
