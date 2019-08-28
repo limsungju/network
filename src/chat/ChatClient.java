@@ -63,6 +63,7 @@ public class ChatClient {
 				scanner.close();
 			}
 		}
+		
 	}
 	
 	private static void log(String log) {
