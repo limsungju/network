@@ -37,6 +37,7 @@ public class ChatClient {
 			pw.println("join:" + nickname);
 			pw.flush();
 			
+			
 			new ChatClientThread(socket, br).start();
 			
 			// 5. 키보드 입력 받기

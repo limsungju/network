@@ -80,7 +80,9 @@ public class ChatServerThread extends Thread {
 				}
 			}
 		}
+		
 	}
+	
 	
 	private void doJoin(String nickName, PrintWriter writer) {
 		this.nickname = nickName;
